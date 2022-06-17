@@ -1,4 +1,3 @@
-from telegram import bot
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
 import os
