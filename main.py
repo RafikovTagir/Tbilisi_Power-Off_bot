@@ -9,9 +9,10 @@ DB_URI = os.environ.get('DATABASE_URL')
 TELASI_URL = 'http://www.telasi.ge/ru/power/'
 
 # TODO:
-#      2) Automatic work every morning for example
+#      2) Automatic start every morning and put request page into db
 #      3) Interface for choosing address and time of notification
 #      5) Fully functional DB for users
+#      6) Make it works for user-defined sites
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
@@ -47,6 +48,10 @@ def check_address(update, context):
     update.message.reply_text(is_address_in_page(TELASI_URL, update.message.text))
 
 
+def start(update):
+    update.message.reply_text('this bot can monitor websites and check for updated information on them')
+
+
 def bop(update, context):
     print(update)
     update.message.reply_text('woof')
@@ -63,6 +68,7 @@ def main():
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('bop', bop))
     dp.add_handler(CommandHandler('Easter', easter_egg))
+    dp.add_handler(CommandHandler('start', start))
     dp.add_handler(MessageHandler(Filters.text, check_address))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
