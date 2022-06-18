@@ -19,12 +19,17 @@ db_object = db_connection.cursor()
 
 def is_address_in_page(url, address):
     response = requests.get(url)
-    if address in response.text:
-        print(True)
-        return True
-    else:
+    index = response.text.find(address)
+    if index == -1:
         print(False)
-        return False
+        return index
+    else:
+        print(True)
+        left_p = response.text.rfind('<p>', 1, index)
+        right_p = response.text.find('</p>', index)
+        print(left_p, right_p)
+        print(response.text[left_p:right_p])
+        return response.text[left_p:right_p]
 
 
 def check_address(update, context):
@@ -38,10 +43,10 @@ def check_address(update, context):
     db_object.execute(f'UPDATE users SET messages = messages+1 WHERE id = {user_id}')
     db_object.execute(f"UPDATE users SET address='{update.message.text}' WHERE id = {user_id}")
     db_connection.commit()
-    if is_address_in_page(TELASI_URL, update.message.text):
-        update.message.reply_text('Есть такое')
-    else:
+    if is_address_in_page(TELASI_URL, update.message.text) == -1:
         update.message.reply_text('Нет такого')
+    else:
+        update.message.reply_text(is_address_in_page(TELASI_URL, update.message.text))
 
 
 def bop(update, context):
