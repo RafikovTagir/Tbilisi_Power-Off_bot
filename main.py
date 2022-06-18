@@ -33,7 +33,7 @@ def is_address_in_page(url, address):
         return response.text[left_p:right_p]
 
 
-def check_address(update):
+def check_address(update, context):
     user_id = update.message.from_user.id
     username = update.message.from_user.username
     db_object.execute(f'SELECT id FROM users WHERE id = {user_id}')
@@ -48,11 +48,11 @@ def check_address(update):
     update.message.reply_text(is_address_in_page(TELASI_URL, update.message.text))
 
 
-def start(update):
+def start(update, context):
     update.message.reply_text('this bot can monitor websites and check for updated information on them')
 
 
-def bop(update):
+def bop(update, context):
     print(update)
     update.message.reply_text('woof')
 
