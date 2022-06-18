@@ -8,7 +8,7 @@ TOKEN = os.environ.get('telegram_bot_token')
 DB_URI = os.environ.get('DATABASE_URL')
 TELASI_URL = 'http://www.telasi.ge/ru/power/'
 
-# TODO:1) To return entire paragraph with time when power-off is, instead of just informing is address in
+# TODO:
 #      2) Automatic work every morning for example
 #      3) Interface for choosing address and time of notification
 #      5) Fully functional DB for users
@@ -19,12 +19,17 @@ db_object = db_connection.cursor()
 
 def is_address_in_page(url, address):
     response = requests.get(url)
-    if address in response.text:
-        print(True)
-        return True
-    else:
+    index = response.text.find(address)
+    if index == -1:
         print(False)
-        return False
+        return 'Нет такого'
+    else:
+        print(True)
+        left_p = response.text.rfind('<p>', 1, index) + 3
+        right_p = response.text.find('</p>', index)
+        print(left_p, right_p)
+        print(response.text[left_p:right_p])
+        return response.text[left_p:right_p]
 
 
 def check_address(update, context):
@@ -38,10 +43,8 @@ def check_address(update, context):
     db_object.execute(f'UPDATE users SET messages = messages+1 WHERE id = {user_id}')
     db_object.execute(f"UPDATE users SET address='{update.message.text}' WHERE id = {user_id}")
     db_connection.commit()
-    if is_address_in_page(TELASI_URL, update.message.text):
-        update.message.reply_text('Есть такое')
-    else:
-        update.message.reply_text('Нет такого')
+
+    update.message.reply_text(is_address_in_page(TELASI_URL, update.message.text))
 
 
 def bop(update, context):
