@@ -29,7 +29,7 @@ def is_address_in_page(url, address):
         right_p = response.text.find('</p>', index)
         print(left_p, right_p)
         print(response.text[left_p:right_p])
-        return response.text[left_p:right_p]
+        return response.text[left_p-3:right_p]
 
 
 def check_address(update, context):
