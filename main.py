@@ -26,11 +26,16 @@ def is_address_in_page(url, address):
         return 'Нет такого'
     else:
         print(True)
-        left_p = response.text.rfind('<p>', 1, index) + 3
+        left_p = response.text.rfind('<p>', 1, index)
         right_p = response.text.find('</p>', index)
+        if left_p == -1:
+            left_p = index-20
+        if right_p == -1:
+            right_p = index+20  # todo remake as exception
+
         print(left_p, right_p)
-        print(response.text[left_p:right_p])
-        return response.text[left_p:right_p]
+        print(response.text[left_p + 3:right_p])
+        return response.text[left_p + 3:right_p]
 
 
 def check_address(update, context):
