@@ -61,7 +61,7 @@ def check(update, context):
         update.message.reply_text('first we need to know site and word for search')
         start(update, context)
     else:
-        update.message.reply_text(is_address_in_page(TELASI_URL, result))
+        update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
 
 
 def bop(update, context):
