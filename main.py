@@ -52,6 +52,18 @@ def start(update, context):
     update.message.reply_text('this bot can monitor websites and check for updated information on them')
 
 
+def check(update, context):
+    user_id = update.message.from_user.id
+    db_object.execute(f'SELECT address FROM users Where id = {user_id}')
+    result = db_object.fetchone()
+    print(result)
+    if not result:
+        update.message.reply_text('first we need to know site and word for search')
+        start(update, context)
+    else:
+        update.message.reply_text(is_address_in_page(TELASI_URL, result))
+
+
 def bop(update, context):
     print(update)
     update.message.reply_text('woof')
@@ -69,6 +81,7 @@ def main():
     dp.add_handler(CommandHandler('bop', bop))
     dp.add_handler(CommandHandler('Easter', easter_egg))
     dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('check', check))
     dp.add_handler(MessageHandler(Filters.text, check_address))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
