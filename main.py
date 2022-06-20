@@ -70,7 +70,11 @@ def check(update, context):
         start(update, context)
     else:
         print(result[0])
-        update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
+        if result[0] == 'Дигоми':
+            print('equal')
+        else:
+            print('not equal')
+        update.message.reply_text(is_address_in_page(TELASI_URL, 'Дигоми'))
 
 
 def easter_egg(update, context):
