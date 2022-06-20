@@ -67,6 +67,7 @@ def check(update, context):
         update.message.reply_text('first we need to know site and word for search')
         start(update, context)
     else:
+        print(result[0])
         update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
 
 
