@@ -23,7 +23,7 @@ def is_address_in_page(url, address):
     index = response.text.find(address)
     if index == -1:
         print(False)
-        return 'Нет такого'
+        return 'There are no such address on page'
     else:
         print(True)
         left_p = response.text.rfind('<p>', 1, index)
@@ -55,7 +55,7 @@ def address_choose(update, context):
 
 
 def start(update, context):
-    update.message.reply_text('Hello)\n Choose address you want to check')
+    update.message.reply_text('Hello)🖐\nChoose address you want to check')
 
 
 def check(update, context):
