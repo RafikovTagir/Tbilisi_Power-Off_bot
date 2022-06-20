@@ -20,6 +20,7 @@ db_object = db_connection.cursor()
 
 def is_address_in_page(url, address):
     response = requests.get(url)
+    print(response)
     index = response.text.find(address)
     if index == -1:
         print(False)
