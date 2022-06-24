@@ -97,7 +97,7 @@ def main():
     dp.add_handler(CommandHandler('Easter', easter_egg))
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('check', check))
-    dp.add_handler(CommandHandler('redis)', redis))
+    dp.add_handler(CommandHandler('redis', redis))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
