@@ -23,9 +23,6 @@ db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
 
 
-r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
-
-
 def is_address_in_page(url, address):
     response = requests.get(url)
     print(address)
@@ -87,6 +84,7 @@ def easter_egg(update, context):
 
 
 def redis(update, context):
+    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
     r.set('foo', 'bar')
     print(r.get('foo'))
 
