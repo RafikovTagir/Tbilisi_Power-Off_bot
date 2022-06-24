@@ -109,7 +109,9 @@ def settings(update, context):
 
 
 def button(update, context):
-    user_id = update.message.from_user.id
+    print(update)
+    user_id = 297706703
+
     db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
     result = db_object.fetchone()
     if not result:
