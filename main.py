@@ -94,10 +94,10 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [[KeyboardButton("Option 1", callback_data='1'),
-                KeyboardButton("Option 2", callback_data='2'),
-                KeyboardButton("Option 3", callback_data='3')]]
-    reply_markup = ReplyKeyboardMarkup(keyboard)
+    keyboard = [KeyboardButton("/Set URL", callback_data='1'),
+                KeyboardButton("/Set search word", callback_data='2'),
+                KeyboardButton("/Set notification time", callback_data='3')]
+    reply_markup = ReplyKeyboardMarkup([keyboard])
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
 
 
