@@ -85,7 +85,10 @@ def easter_egg(update, context):
 
 def redis_up(update, context):
     r = redis.from_url(REDIS_URL)
-    print(r.ping())
+    r.ping()
+    r.set('foo', 'bar')
+    r.get('foo')
+    print(r.get('foo'))
 
 
 def main():
