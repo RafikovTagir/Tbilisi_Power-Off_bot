@@ -83,10 +83,9 @@ def easter_egg(update, context):
     update.message.reply_text('🥚🥚🥚🥚🥚')  # 🥚
 
 
-def redis(update, context):
+def redis_up(update, context):
     r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
-    r.set('foo', 'bar')
-    print(r.get('foo'))
+    print(r.ping())
 
 
 def main():
@@ -95,7 +94,7 @@ def main():
     dp.add_handler(CommandHandler('Easter', easter_egg))
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('check', check))
-    dp.add_handler(CommandHandler('redis', redis))
+    dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
