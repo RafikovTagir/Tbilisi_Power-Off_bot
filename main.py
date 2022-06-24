@@ -1,4 +1,4 @@
-from telegram import ReplyKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import redis
 import requests
@@ -94,13 +94,9 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [
-        [
-            ReplyKeyboardMarkup("Option 1", callback_data='1'),
-            ReplyKeyboardMarkup("Option 2", callback_data='2'),
-        ],
-        [ReplyKeyboardMarkup("Option 3", callback_data='3')],
-    ]
+    keyboard = [[KeyboardButton("Option 1", callback_data='1'),
+                KeyboardButton("Option 2", callback_data='2'),
+                KeyboardButton("Option 3", callback_data='3')]]
     reply_markup = ReplyKeyboardMarkup(keyboard)
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
 
