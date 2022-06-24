@@ -111,17 +111,19 @@ def settings(update, context):
 def button(update, context):
     print(update)
     user_id = update.callback_query.from_user.id
-    db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
-    result = db_object.fetchone()
-    if not result:
-        update.message.reply_text('We cant find you in our database, please use /start command')
-        return
 
     query = update.callback_query
     print(query.data)
     query.answer()
     context.user_data['settings_state'] = query.data
-    query.edit_message_text(text=f'current url is {result[0]} please type new one')
+
+    db_object.execute(f'SELECT {query.data} FROM users WHERE id = {user_id}')
+    result = db_object.fetchone()
+    if not result:
+        update.message.reply_text('We cant find you in our database, please use /start command')
+        return
+
+    query.edit_message_text(text=f'current {query.data} is {result[0]} please type new one')
 
 
 def set_url(update, context):
