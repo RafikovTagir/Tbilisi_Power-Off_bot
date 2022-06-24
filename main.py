@@ -117,8 +117,8 @@ def set_url(update, context):
         update.message.reply_text('We cant find you in our database, please use /start command')
         return
     context.user_data['settings_state'] = 'page_url'
-    update.message.reply_text(f'current url is {result[0]}' 
-                              'type new one')
+    update.message.reply_text(f'current url is {result[0]} '
+                              'please type new one')
 
 
 def user_input(update, context):
