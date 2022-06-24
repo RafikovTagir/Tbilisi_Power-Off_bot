@@ -102,7 +102,7 @@ def settings(update, context):
         [ReplyKeyboardMarkup("Option 3", callback_data='3')],
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard)
-    update.message.reply_text('Please use buttons to setup')
+    update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
 
 
 def main():
