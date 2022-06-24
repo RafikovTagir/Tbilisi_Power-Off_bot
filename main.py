@@ -24,8 +24,6 @@ db_object = db_connection.cursor()
 
 
 r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
-r.set('foo', 'bar')
-print(r.get('foo'))
 
 
 def is_address_in_page(url, address):
@@ -88,12 +86,18 @@ def easter_egg(update, context):
     update.message.reply_text('🥚🥚🥚🥚🥚')  # 🥚
 
 
+def redis(update, context):
+    r.set('foo', 'bar')
+    print(r.get('foo'))
+
+
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('Easter', easter_egg))
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('check', check))
+    dp.add_handler(CommandHandler('redis)', redis))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
