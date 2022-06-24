@@ -139,7 +139,7 @@ def set_url(update, context):
 
 
 def user_input(update, context):
-    if not context.user_data['settings_state']:
+    if 'settings_state' not in context.user_data:
         update.message.reply_text('get out here')
         return
     db_column = context.user_data['settings_state']
