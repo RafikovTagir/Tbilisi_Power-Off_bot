@@ -100,7 +100,7 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [InlineKeyboardButton("Set_URL", callback_data='set_url'),
+    keyboard = [InlineKeyboardButton("Set_URL", callback_data='page_url'),
                 InlineKeyboardButton("Set_search word", callback_data='address'),
                 InlineKeyboardButton("Set_notification time", callback_data='notification_time')]
 
