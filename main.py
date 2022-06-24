@@ -101,9 +101,9 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [KeyboardButton("/Set URL", callback_data='1'),
-                KeyboardButton("/Set search word", callback_data='2'),
-                KeyboardButton("/Set notification time", callback_data='3')]
+    keyboard = [KeyboardButton("/Set_URL", callback_data='1'),
+                KeyboardButton("/Set_search word", callback_data='2'),
+                KeyboardButton("/Set_notification time", callback_data='3')]
 
     reply_markup = ReplyKeyboardMarkup([keyboard], one_time_keyboard=True)
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
@@ -139,7 +139,7 @@ def main():
     dp.add_handler(CommandHandler('check', check))
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
-    dp.add_handler(CommandHandler('Set URL', set_url))
+    dp.add_handler(CommandHandler('Set_URL', set_url))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
