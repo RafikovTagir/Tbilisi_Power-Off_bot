@@ -1,4 +1,5 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import redis
 import requests
 import os
 import psycopg2
@@ -7,15 +8,24 @@ PORT = int(os.environ.get('PORT', 5000))
 TOKEN = os.environ.get('telegram_bot_token')
 DB_URI = os.environ.get('DATABASE_URL')
 TELASI_URL = 'http://www.telasi.ge/ru/power/'
+REDIS_URL = os.environ.get('REDIS_URL')
+REDIS_PORT = os.environ.get('REDIS_PORT')
+REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
+REDIS_HOST = os.environ.get('REDIS_HOST')
 
 # TODO:
 #      2) Automatic start every morning and put request page into db
-#      3) Interface for choosing address and time of notification
-#      5) Fully functional DB for users
+#      3) Interface for choosing web-site and time of notification
 #      6) Make it works for user-defined sites
+
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
+
+
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
+r.set('foo', 'bar')
+print(r.get('foo'))
 
 
 def is_address_in_page(url, address):
@@ -57,7 +67,7 @@ def address_choose(update, context):
 
 
 def start(update, context):
-    update.message.reply_text('Hello)🖐\nChoose address you want to check')
+    update.message.reply_text('Hello)🖐\nDo you want to customize your settings?')
 
 
 def check(update, context):
@@ -69,11 +79,6 @@ def check(update, context):
         update.message.reply_text('first we need to know site and word for search')
         start(update, context)
     else:
-        print(result[0])
-        if result[0] == 'Дигоми':
-            print('equal')
-        else:
-            print('not equal')
         update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
 
 
