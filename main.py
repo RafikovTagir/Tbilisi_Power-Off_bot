@@ -84,7 +84,7 @@ def easter_egg(update, context):
 
 
 def redis_up(update, context):
-    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=0)
+    r = redis.from_url('redis://:p541037535afb46998ed9b18a6d9c5e7f547f885e3b02e6de9a5793e9deba8580@ec2-52-203-135-103.compute-1.amazonaws.com:29420')
     print(r.ping())
 
 
