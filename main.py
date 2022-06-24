@@ -1,5 +1,5 @@
-from telegram import ReplyKeyboardMarkup, KeyboardButton
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import redis
 import requests
 import os
@@ -17,7 +17,6 @@ REDIS_HOST = os.environ.get('REDIS_HOST')
 # TODO:
 #      2) Automatic start every morning and put request page into db
 #      3) Interface for choosing web-site and time of notification
-#      6) Make it works for user-defined sites
 
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
@@ -101,12 +100,31 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [KeyboardButton("/Set_URL", callback_data='1'),
-                KeyboardButton("/Set_search word", callback_data='2'),
-                KeyboardButton("/Set_notification time", callback_data='3')]
+    keyboard = [InlineKeyboardButton("Set_URL", callback_data='set_url'),
+                InlineKeyboardButton("Set_search word", callback_data='address'),
+                InlineKeyboardButton("Set_notification time", callback_data='notification_time')]
 
-    reply_markup = ReplyKeyboardMarkup([keyboard], one_time_keyboard=True)
+    reply_markup = InlineKeyboardMarkup([keyboard], one_time_keyboard=True)
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
+
+
+def button(update, context):
+    user_id = update.message.from_user.id
+    db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
+    result = db_object.fetchone()
+    if not result:
+        update.message.reply_text('We cant find you in our database, please use /start command')
+        return
+
+    query = update.callback_query
+    print(query.data)
+    query.answer()
+    context.user_data['settings_state'] = query.data
+
+    update.message.reply_text(f'current url is {result[0]} '
+                              'please type new one')
+
+    query.edit_message_text(text=f'current url is {result[0]} please type new one')
 
 
 def set_url(update, context):
@@ -141,6 +159,7 @@ def main():
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
     dp.add_handler(CommandHandler('Set_URL', set_url))
+    dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(MessageHandler(Filters.text, user_input))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
