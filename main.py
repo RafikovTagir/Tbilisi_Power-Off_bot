@@ -66,6 +66,13 @@ def address_choose(update, context):
 
 
 def start(update, context):
+    user_id = update.message.from_user.id
+    username = update.message.from_user.username
+    db_object.execute(f'SELECT id FROM users WHERE id = {user_id}')
+    result = db_object.fetchone()
+    if not result:
+        db_object.execute('INSERT INTO users(id, username, messages VALUES(%s, %s, %s)', (user_id, username, 0))
+        db_connection.commit()
     update.message.reply_text('Hello)🖐\nDo you want to customize your settings?')
 
 
@@ -97,8 +104,31 @@ def settings(update, context):
     keyboard = [KeyboardButton("/Set URL", callback_data='1'),
                 KeyboardButton("/Set search word", callback_data='2'),
                 KeyboardButton("/Set notification time", callback_data='3')]
-    reply_markup = ReplyKeyboardMarkup([keyboard])
+
+    reply_markup = ReplyKeyboardMarkup([keyboard], one_time_keyboard=True)
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
+
+
+def set_url(update, context):
+    user_id = update.message.from_user.id
+    db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
+    result = db_object.fetchone()
+    if not result:
+        update.message.reply_text('We cant find you in our database, please use /start command')
+        return
+    context.user_data['settings_state'] = 'page_url'
+    update.message.reply_text(f'current url is {result}' 
+                              'type new one')
+
+
+def user_input(update, context):
+    if not context.user_data['settings_state']:
+        update.message.reply_text('get out here')
+        return
+    db_column = context.user_data['settings_state']
+    user_id = update.message.from_user.id
+    db_object.execute(f"UPDATE users SET {db_column}='{update.message.text}' WHERE id = {user_id}")
+    update.message.reply_text(f'Your {db_column} is now {update.message.text}')
 
 
 def main():
@@ -109,6 +139,7 @@ def main():
     dp.add_handler(CommandHandler('check', check))
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
+    dp.add_handler(CommandHandler('Set URL', set_url))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
