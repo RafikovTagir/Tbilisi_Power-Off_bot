@@ -110,8 +110,7 @@ def settings(update, context):
 
 def button(update, context):
     print(update)
-    user_id = 297706703
-
+    user_id = update.callback_query.from_user.id
     db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
     result = db_object.fetchone()
     if not result:
@@ -122,10 +121,6 @@ def button(update, context):
     print(query.data)
     query.answer()
     context.user_data['settings_state'] = query.data
-
-    update.message.reply_text(f'current url is {result[0]} '
-                              'please type new one')
-
     query.edit_message_text(text=f'current url is {result[0]} please type new one')
 
 
