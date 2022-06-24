@@ -1,3 +1,4 @@
+from telegram import ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import redis
 import requests
@@ -88,8 +89,20 @@ def easter_egg(update, context):
 
 def redis_up(update, context):
     print(r.ping())
-    r.set('foo', 'bar')
+    r.set('user_id', 'current_state_session')
     print(r.get('foo'))
+
+
+def settings(update, context):
+    keyboard = [
+        [
+            ReplyKeyboardMarkup("Option 1", callback_data='1'),
+            ReplyKeyboardMarkup("Option 2", callback_data='2'),
+        ],
+        [ReplyKeyboardMarkup("Option 3", callback_data='3')],
+    ]
+    reply_markup = ReplyKeyboardMarkup(keyboard)
+    update.message.reply_text('Please use buttons to setup')
 
 
 def main():
@@ -99,6 +112,7 @@ def main():
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('check', check))
     dp.add_handler(CommandHandler('redis', redis_up))
+    dp.add_handler(CommandHandler('settings', settings))
     dp.add_handler(MessageHandler(Filters.text, address_choose))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
