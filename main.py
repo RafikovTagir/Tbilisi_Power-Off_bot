@@ -140,7 +140,7 @@ def main():
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
     dp.add_handler(CommandHandler('Set_URL', set_url))
-    dp.add_handler(MessageHandler(Filters.text, address_choose))
+    dp.add_handler(MessageHandler(Filters.text, user_input))
     updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
                           url_path=TOKEN)
