@@ -99,9 +99,9 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [InlineKeyboardButton("Set_URL", callback_data='page_url'),
-                InlineKeyboardButton("Set_search word", callback_data='address'),
-                InlineKeyboardButton("Set_notification time", callback_data='notification_time')]
+    keyboard = [InlineKeyboardButton("Set URL 🌐", callback_data='page_url'),
+                InlineKeyboardButton("Set search word 🔍", callback_data='address'),
+                InlineKeyboardButton("Set notification time ⌚", callback_data='notification_time')]
 
     reply_markup = InlineKeyboardMarkup([keyboard], one_time_keyboard=True)
     update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
