@@ -124,6 +124,13 @@ def user_input(update, context):
     del context.user_data['settings_state']
 
 
+def all_users_notification(update, context):
+    db_object.execute(f'SELECT id FROM users')
+    result = db_object.fetchone()
+    print(result)
+    update.message.reply_text(result)
+
+
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
@@ -132,6 +139,7 @@ def main():
     dp.add_handler(CommandHandler('check', check))
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
+    dp.add_handler(CommandHandler('all', all_users_notification))
     dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(MessageHandler(Filters.text, user_input))
     updater.start_webhook(listen="0.0.0.0",
