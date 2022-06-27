@@ -136,6 +136,13 @@ def all_users_notification(update, context):
                                                         'волнуйтесь я просто кое-что тестирую')
 
 
+def good_morning():
+    db_object.execute(f'SELECT id FROM users WHERE enable_notification = true')
+    for record in db_object:
+        print(record)
+        updater.bot.sendMessage(chat_id=record[0], text='Good Morning!')
+
+
 def main():
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('Easter', easter_egg))
