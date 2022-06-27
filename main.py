@@ -16,6 +16,7 @@ REDIS_HOST = os.environ.get('REDIS_HOST')
 
 # TODO:
 #      2) Automatic start every morning and put request page into db
+#      3) Use logging instead of print
 
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
@@ -143,7 +144,7 @@ def user_input(update, context):
         return
     db_column = context.user_data['settings_state']
     user_id = update.message.from_user.id
-    db_object.execute(f"UPDATE users SET {db_column}='{update.message.text}' WHERE id = {user_id}")
+    db_object.execute(f"UPDATE users SET {db_column} = '{update.message.text}' WHERE id = {user_id}")
     db_connection.commit()
     update.message.reply_text(f'Your {db_column} is now {update.message.text}')
     del context.user_data['settings_state']
