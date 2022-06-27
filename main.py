@@ -56,7 +56,7 @@ def start(update, context):
     db_object.execute(f'SELECT id FROM users WHERE id = {user_id}')
     result = db_object.fetchone()
     if not result:
-        db_object.execute('INSERT INTO users(id, username, messages VALUES(%s, %s, %s)', (user_id, username, 0))
+        db_object.execute('INSERT INTO users(id, username, messages) VALUES(%s, %s, %s)', (user_id, username, 0))
         db_connection.commit()
     update.message.reply_text('Hello)🖐\nDo you want to customize your settings?')
 
@@ -126,9 +126,8 @@ def user_input(update, context):
 
 def all_users_notification(update, context):
     db_object.execute(f'SELECT id FROM users')
-    result = db_object.fetchone()
-    print(result)
-    update.message.reply_text(result)
+    for record in db_object:
+        update.message.reply_text(user_id=record, text=update.message.text)
 
 
 def main():
