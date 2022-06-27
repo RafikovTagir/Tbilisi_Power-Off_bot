@@ -21,6 +21,10 @@ REDIS_HOST = consts.REDIS_HOST
 #      3) Use logging instead of print
 #      4) Validate user input
 
+
+updater = Updater(TOKEN, use_context=True)
+
+
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
 
@@ -127,11 +131,10 @@ def user_input(update, context):
 def all_users_notification(update, context):
     db_object.execute(f'SELECT id FROM users')
     for record in db_object:
-        update.message.reply_text(user_id=record, text=update.message.text)
+        updater.bot.sendMessage(chat_id=record, text=update.message.text)
 
 
 def main():
-    updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('Easter', easter_egg))
     dp.add_handler(CommandHandler('start', start))
