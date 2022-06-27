@@ -131,7 +131,8 @@ def user_input(update, context):
 def all_users_notification(update, context):
     db_object.execute(f'SELECT id FROM users')
     for record in db_object:
-        updater.bot.sendMessage(chat_id=record, text=update.message.text)
+        updater.bot.sendMessage(chat_id=record, text='Если вы видите это сообщение не '
+                                                     'волнуйтесь я просто кое-что тестирую')
 
 
 def main():
