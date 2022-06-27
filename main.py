@@ -120,7 +120,7 @@ def user_input(update, context):
     user_id = update.message.from_user.id
     db_object.execute(f"UPDATE users SET {db_column} = '{update.message.text}' WHERE id = {user_id}")
     db_connection.commit()
-    update.message.reply_text(f'Your {db_column} is now {update.message.text}')
+    update.message.reply_text(f'Now your {db_column} is: {update.message.text}')
     del context.user_data['settings_state']
 
 
