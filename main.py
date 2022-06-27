@@ -4,15 +4,17 @@ import redis
 import requests
 import os
 import psycopg2
+import myconstants as consts
 
-PORT = int(os.environ.get('PORT', 5000))
-TOKEN = os.environ.get('telegram_bot_token')
-DB_URI = os.environ.get('DATABASE_URL')
-TELASI_URL = 'http://www.telasi.ge/ru/power/'
-REDIS_URL = os.environ.get('REDIS_URL')
-REDIS_PORT = os.environ.get('REDIS_PORT')
-REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
-REDIS_HOST = os.environ.get('REDIS_HOST')
+
+PORT = consts.PORT
+TOKEN = consts.TOKEN
+DB_URI = consts.DB_URI
+TELASI_URL = consts.TELASI_URL
+REDIS_URL = consts.REDIS_URL
+REDIS_PORT = consts.REDIS_PORT
+REDIS_PASSWORD = consts.REDIS_PASSWORD
+REDIS_HOST = consts.REDIS_HOST
 
 # TODO:
 #      2) Automatic start every morning and put request page into db
