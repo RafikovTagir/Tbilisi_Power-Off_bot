@@ -17,7 +17,7 @@ REDIS_HOST = os.environ.get('REDIS_HOST')
 # TODO:
 #      2) Automatic start every morning and put request page into db
 #      3) Use logging instead of print
-
+#      4) Validate user input
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
