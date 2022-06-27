@@ -33,7 +33,7 @@ def is_address_in_page(url, address):
     index = response.text.find(address)
     if index == -1:
         print(False)
-        return 'There are no such address on page'
+        return 'There are no such word on page'
     else:
         print(True)
         left_p = response.text.rfind('<p>', 1, index)
@@ -65,8 +65,8 @@ def check(update, context):
     result = db_object.fetchone()
     print(result)
     if not result:
-        update.message.reply_text('first we need to know site and word for search')
-        start(update, context)
+        update.message.reply_text('We cant find you in our database, please use /start command')
+        return
     else:
         update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
 
@@ -84,12 +84,12 @@ def redis_up(update, context):
 
 
 def settings(update, context):
-    keyboard = [InlineKeyboardButton("Set URL 🌐", callback_data='page_url'),
-                InlineKeyboardButton("Set search word 🔍", callback_data='address'),
-                InlineKeyboardButton("Set notification time ⌚", callback_data='notification_time')]
+    keyboard = [InlineKeyboardButton("URL 🌐", callback_data='page_url'),
+                InlineKeyboardButton("Search word 🔍", callback_data='address'),
+                InlineKeyboardButton("Notification time ⌚", callback_data='notification_time')]
 
     reply_markup = InlineKeyboardMarkup([keyboard], one_time_keyboard=True)
-    update.message.reply_text('Please use buttons to setup', reply_markup=reply_markup)
+    update.message.reply_text('What you wanna change?', reply_markup=reply_markup)
 
 
 def button(update, context):
@@ -112,7 +112,7 @@ def button(update, context):
 
 def user_input(update, context):
     if 'settings_state' not in context.user_data:
-        update.message.reply_text('get out here')
+        update.message.reply_text("I don't understand you, please use buttons")
         return
     db_column = context.user_data['settings_state']
     user_id = update.message.from_user.id
