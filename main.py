@@ -48,22 +48,6 @@ def is_address_in_page(url, address):
         return response.text[left_p + 3:right_p]
 
 
-def address_choose(update, context):
-    user_id = update.message.from_user.id
-    username = update.message.from_user.username
-    db_object.execute(f'SELECT id FROM users WHERE id = {user_id}')
-    result = db_object.fetchone()  # fetchone method returns last line of result after execution
-    if not result:
-        db_object.execute('INSERT INTO users(id, username, messages, address) VALUES(%s, %s, %s, %s)', (user_id, username, 0, update.message.text))
-        db_connection.commit()
-    db_object.execute(f'UPDATE users SET messages = messages+1 WHERE id = {user_id}')
-    db_object.execute(f"UPDATE users SET address='{update.message.text}' WHERE id = {user_id}")
-    db_connection.commit()
-
-    update.message.reply_text(f'You are chose address: {update.message.text}')
-    update.message.reply_text('If you want to check it, use /check command')
-
-
 def start(update, context):
     user_id = update.message.from_user.id
     username = update.message.from_user.username
@@ -126,18 +110,6 @@ def button(update, context):
     query.edit_message_text(text=f'current {query.data} is {result[0]} please type new one')
 
 
-def set_url(update, context):
-    user_id = update.message.from_user.id
-    db_object.execute(f'SELECT page_url FROM users WHERE id = {user_id}')
-    result = db_object.fetchone()
-    if not result:
-        update.message.reply_text('We cant find you in our database, please use /start command')
-        return
-    context.user_data['settings_state'] = 'page_url'
-    update.message.reply_text(f'current url is {result[0]} '
-                              'please type new one')
-
-
 def user_input(update, context):
     if 'settings_state' not in context.user_data:
         update.message.reply_text('get out here')
@@ -158,7 +130,6 @@ def main():
     dp.add_handler(CommandHandler('check', check))
     dp.add_handler(CommandHandler('redis', redis_up))
     dp.add_handler(CommandHandler('settings', settings))
-    dp.add_handler(CommandHandler('Set_URL', set_url))
     dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(MessageHandler(Filters.text, user_input))
     updater.start_webhook(listen="0.0.0.0",
