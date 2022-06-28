@@ -2,6 +2,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler
 import psycopg2
 import myconstants as consts
+import main
 
 
 TOKEN = consts.TOKEN
@@ -13,10 +14,11 @@ db_object = db_connection.cursor()
 updater = Updater(TOKEN, use_context=True)
 
 
-db_object.execute(f'SELECT id FROM users WHERE enable_notification = true')
+db_object.execute(f'SELECT id, notification_time, address, page_url FROM users WHERE enable_notification = true')
 for record in db_object:
     print(record)
-    updater.bot.sendMessage(chat_id=record[0], text='Good Morning from file!')
+    answer = main.is_address_in_page(record[3], record[2])
+    updater.bot.sendMessage(chat_id=record[0], text=answer)
 
 
 db_connection.close()
