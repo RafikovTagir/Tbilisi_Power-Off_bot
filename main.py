@@ -32,6 +32,8 @@ r = redis.from_url(REDIS_URL)
 
 
 def is_address_in_page(url, address):
+    if url[:5] != 'http:' or 'https':
+        url = 'http://www.' + url
     response = requests.get(url)
     print(address)
     print(response.text)
