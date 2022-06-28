@@ -66,14 +66,14 @@ def start(update, context):
 
 def check(update, context):
     user_id = update.message.from_user.id
-    db_object.execute(f'SELECT address FROM users Where id = {user_id}')
+    db_object.execute(f'SELECT address, page_url FROM users Where id = {user_id}')
     result = db_object.fetchone()
     print(result)
     if not result:
         update.message.reply_text('We cant find you in our database, please use /start command')
         return
     else:
-        update.message.reply_text(is_address_in_page(TELASI_URL, result[0]))
+        update.message.reply_text(is_address_in_page(result[1], result[0]))
 
 
 def easter_egg(update, context):

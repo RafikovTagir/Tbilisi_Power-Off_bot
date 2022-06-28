@@ -3,6 +3,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler
 import psycopg2
 import myconstants as consts
 import main
+import datetime
 
 
 TOKEN = consts.TOKEN
