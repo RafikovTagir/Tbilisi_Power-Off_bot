@@ -4,20 +4,12 @@ import psycopg2
 import myconstants as consts
 
 
-PORT = consts.PORT
 TOKEN = consts.TOKEN
 DB_URI = consts.DB_URI
-TELASI_URL = consts.TELASI_URL
-REDIS_URL = consts.REDIS_URL
-REDIS_PORT = consts.REDIS_PORT
-REDIS_PASSWORD = consts.REDIS_PASSWORD
-REDIS_HOST = consts.REDIS_HOST
 
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
-
-
 updater = Updater(TOKEN, use_context=True)
 
 
