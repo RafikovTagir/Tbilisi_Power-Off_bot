@@ -61,7 +61,7 @@ def start(update, context):
     if not result:
         db_object.execute('INSERT INTO users(id, username, messages) VALUES(%s, %s, %s)', (user_id, username, 0))
         db_connection.commit()
-    update.message.reply_text('Hello)🖐\nDo you want to customize your settings?')
+    update.message.reply_text('Hello)🖐\nTo customize your settings use /settings command')
 
 
 def check(update, context):
