@@ -19,7 +19,7 @@ My_IP = consts.My_IP
 # TODO:
 #      2) put request page into db
 #      3) Use logging instead of print
-#      4) Validate user input
+#      4) Validate user inpu
 
 
 updater = Updater(TOKEN, use_context=True)
