@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import redis
 import requests
@@ -10,13 +10,14 @@ PORT = consts.PORT
 TOKEN = consts.TOKEN
 DB_URI = consts.DB_URI
 TELASI_URL = consts.TELASI_URL
-REDIS_URL = consts.REDIS_URL
-REDIS_PORT = consts.REDIS_PORT
-REDIS_PASSWORD = consts.REDIS_PASSWORD
-REDIS_HOST = consts.REDIS_HOST
+My_IP = consts.My_IP
+#REDIS_URL = consts.REDIS_URL
+#REDIS_PORT = consts.REDIS_PORT
+#REDIS_PASSWORD = consts.REDIS_PASSWORD
+#REDIS_HOST = consts.REDIS_HOST
 
 # TODO:
-#      2) Automatic start every morning and put request page into db
+#      2) put request page into db
 #      3) Use logging instead of print
 #      4) Validate user input
 
@@ -26,9 +27,6 @@ updater = Updater(TOKEN, use_context=True)
 
 db_connection = psycopg2.connect(DB_URI, sslmode='require')
 db_object = db_connection.cursor()
-
-
-r = redis.from_url(REDIS_URL)
 
 
 def is_address_in_page(url, address):
@@ -119,7 +117,8 @@ def button(update, context):
 
 def user_input(update, context):
     if 'settings_state' not in context.user_data:
-        update.message.reply_text("I don't understand you, please use buttons")
+        buttons = [[KeyboardButton('/Settings')], [KeyboardButton('/start')]]
+        update.message.reply_text("I don't understand you, please use buttons", reply_markup=ReplyKeyboardMarkup(buttons))
         return
     db_column = context.user_data['settings_state']
     user_id = update.message.from_user.id
@@ -154,10 +153,11 @@ def main():
     dp.add_handler(CommandHandler('all', all_users_notification))
     dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(MessageHandler(Filters.text, user_input))
-    updater.start_webhook(listen="0.0.0.0",
+    updater.start_webhook(listen=My_IP,
+                          key='private.key',
+                          cert='cert.pem',
                           port=int(PORT),
                           url_path=TOKEN)
-    updater.bot.setWebhook('https://salty-plains-61736.herokuapp.com/' + TOKEN)
     updater.idle()
 
 
