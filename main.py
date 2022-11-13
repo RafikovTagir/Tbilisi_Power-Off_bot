@@ -11,6 +11,7 @@ TOKEN = consts.TOKEN
 DB_URI = consts.DB_URI
 TELASI_URL = consts.TELASI_URL
 My_IP = consts.My_IP
+PATH = consts.PATH
 #REDIS_URL = consts.REDIS_URL
 #REDIS_PORT = consts.REDIS_PORT
 #REDIS_PASSWORD = consts.REDIS_PASSWORD
@@ -154,8 +155,8 @@ def main():
     dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(MessageHandler(Filters.text, user_input))
     updater.start_webhook(listen=My_IP,
-                          key='private.key',
-                          cert='cert.pem',
+                          key=PATH+'private.key',
+                          cert=PATH+'cert.pem',
                           port=int(PORT),
                           url_path=TOKEN)
     updater.idle()
