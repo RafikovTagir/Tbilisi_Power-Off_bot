@@ -20,7 +20,7 @@ PATH = consts.PATH
 # TODO:
 #      2) put request page into db
 #      3) Use logging instead of print
-#      4) Validate user inpu
+#      4) Validate user input
 
 
 updater = Updater(TOKEN, use_context=True)
