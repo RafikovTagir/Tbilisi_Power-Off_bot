@@ -12,6 +12,10 @@ DB_URI = consts.DB_URI
 TELASI_URL = consts.TELASI_URL
 My_IP = consts.My_IP
 PATH = consts.PATH
+
+print(My_IP)
+print(PATH)
+
 #REDIS_URL = consts.REDIS_URL
 #REDIS_PORT = consts.REDIS_PORT
 #REDIS_PASSWORD = consts.REDIS_PASSWORD
